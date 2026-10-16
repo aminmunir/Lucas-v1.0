@@ -1,0 +1,6 @@
+# Additional Lucas v1.0 dependencies. The workflow installs PyTorch CPU and
+# the official Kronos repository's pinned dependencies separately.
+numpy<2.0
+pandas==2.2.2
+requests>=2.32.4,<3
+PyYAML==6.0.2

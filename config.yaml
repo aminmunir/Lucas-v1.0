@@ -1,0 +1,69 @@
+project:
+  name: "Lucas v1.0"
+  timezone: "Asia/Karachi"
+
+model:
+  # Primary model requested for Lucas v1.0. The workflow runs on CPU.
+  model_id: "NeoQuasar/Kronos-base"
+  tokenizer_id: "NeoQuasar/Kronos-Tokenizer-base"
+  max_context: 512
+  sample_count: 1
+  temperature: 1.0
+  top_p: 0.9
+  device: "cpu"
+
+market_data:
+  symbols:
+    - symbol: "BTCUSDT"
+      display_name: "Bitcoin"
+      pair: "BTC/USDT"
+    - symbol: "ETHUSDT"
+      display_name: "Ethereum"
+      pair: "ETH/USDT"
+  candles_to_request: 520
+  request_timeout_seconds: 25
+  # Public Binance market-data endpoints; no API key is used.
+  base_urls:
+    - "https://data-api.binance.vision"
+    - "https://api.binance.com"
+
+strategy:
+  forecast_move_threshold_pct: 2.0
+  take_profit_pct: 2.0
+  confirmation_deadband_pct: 0.05
+  atr_period: 14
+  stop_atr_multiple: 1.5
+  minimum_reward_to_risk: 1.2
+  volatility_history_bars: 100
+  assumed_fee_pct_per_side: 0.10
+  assumed_slippage_pct_per_side: 0.05
+
+  intraday:
+    enabled: true
+    category: "INTRADAY"
+    primary_timeframe: "15m"
+    forecast_candles: 16        # 16 x 15m = 4 hours
+    confirmation_timeframe: "1h"
+    confirmation_candles: 4    # 4 x 1h = 4 hours
+    repeat_cooldown_hours: 4
+
+  swing:
+    enabled: true
+    category: "SWING"
+    primary_timeframe: "4h"
+    forecast_candles: 6         # 6 x 4h = 24 hours
+    confirmation_timeframe: "1d"
+    confirmation_candles: 2     # 2 x 1d = 48 hours
+    repeat_cooldown_hours: 24
+    run_only_when_new_4h_candle_closes: true
+
+alerts:
+  telegram_enabled: true
+  send_test_message_on_manual_request: true
+  # A forecast consistency label, not a calibrated probability of success.
+  high_confidence_extra_forecast_move_pct: 2.5
+  high_confidence_min_terminal_move_pct: 1.0
+
+runtime:
+  lookback_candles: 512
+  log_level: "INFO"

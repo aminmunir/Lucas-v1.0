@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.venv/
+.env
+.lucas_state.json
+.lucas_state.json.tmp
+lucas_run.log
+*.pyc
